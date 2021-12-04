@@ -69,11 +69,11 @@ scene("main", () => {
       pos(WIDTH, h1 - PIPE_OPEN),
       rect(64, h2),
       color(111,187,49),
-      outline(4),
       area(),
-      move(LEFT, SPEED)
+      outline(4),
+      move(LEFT, SPEED),
       cleanup(),
-      "pipe",
+      "pipe",  
       ])
 
   }
@@ -97,7 +97,7 @@ scene("lose", () => {
   add([
     sprite("flappy"),
     pos(WIDTH / 2, HEIGHT / 2 -100),
-    scale(3)
+    scale(3),
     origin("center"),
   ])
 
@@ -110,14 +110,14 @@ scene("lose", () => {
 
   add([
     text("CLICK TO PLAY AGAIN"),
-    pos(WIDTH /2, HEIGHT / 2 - 300)
+    pos(WIDTH /2, HEIGHT / 2 - 300),
     origin("center"),
   ])
 
-  mouseClick({
+  mouseClick(()=>{
     go("main");
   })
-  
+
 })
 
 go("main");

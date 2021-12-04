@@ -2763,20 +2763,68 @@ vec4 frag(vec3 pos, vec2 uv, vec4 color, sampler2D tex) {
     mouseClick(() => {
       flappy.jump(JUMP_FORCE);
     });
+    flappy.action(() => {
+      if (flappy.pos.y >= HEIGHT || flappy.pos.y <= CEILING) {
+        go("lose");
+      }
+    });
     function spawnPipe() {
       let h1 = rand(PIPE_MIN, HEIGHT - PIPE_MIN - PIPE_OPEN);
       let h2 = HEIGHT - h1 - PIPE_OPEN;
       add([
-        pos(WIDTH - 100, 0),
+        pos(WIDTH, 0),
         rect(64, h2),
         color(111, 187, 49),
         area(),
         outline(4),
-        move(LEFT, SPEED)
+        move(LEFT, SPEED),
+        cleanup(),
+        "pipe"
+      ]);
+      add([
+        pos(WIDTH, h1 - PIPE_OPEN),
+        rect(64, h2),
+        color(111, 187, 49),
+        area(),
+        outline(4),
+        move(LEFT, SPEED),
+        cleanup(),
+        "pipe"
       ]);
     }
     __name(spawnPipe, "spawnPipe");
-    spawnPipe();
+    loop(1, () => {
+      spawnPipe();
+    });
+    flappy.collides("pipe", () => {
+      go("lose");
+    });
+  });
+  scene("lose", () => {
+    add([
+      sprite("bg"),
+      pos(0, 0)
+    ]);
+    add([
+      sprite("flappy"),
+      pos(WIDTH / 2, HEIGHT / 2 - 100),
+      scale(3),
+      origin("center")
+    ]);
+    add([
+      text("GAMEOVER"),
+      pos(WIDTH / 2, HEIGHT / 2, 100),
+      scale(2.5),
+      origin("center")
+    ]);
+    add([
+      text("CLICK TO PLAY AGAIN"),
+      pos(WIDTH / 2, HEIGHT / 2 - 300),
+      origin("center")
+    ]);
+    mouseClick(() => {
+      go("main");
+    });
   });
   go("main");
 })();
